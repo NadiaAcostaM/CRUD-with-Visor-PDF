@@ -1,0 +1,115 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="up-actions">
+            <div class="form-group">
+                <div class="search-input">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                    <input type="text" id="buscador" placeholder="Buscar por nombre" required>
+                </div>
+            </div>
+
+            <button class="btn-agregar" onclick="abrirFormulario()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                </svg>
+                <span>Agregar</span>
+            </button>
+    </div>        
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaProductos"></tbody>
+        </table>
+
+        <!-- Controles de paginación -->
+        <div id="paginacion" class="paginacion">
+        <button id="pagina-anterior" onclick="paginaAnterior()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+        </button>
+            <span id="info-pagina" class="info-pagina">Página 1 de 1</span>
+        <button id="pagina-siguiente" onclick="paginaSiguiente()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+            </svg>
+        </button>
+        </div>
+    </div>
+
+    <!-- Modal para el formulario de productos -->
+    <div id="modalProducto" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar" onclick="cerrarModalProducto()">&times;</span>
+            <h2>Editar Producto</h2>
+            <hr />
+            <form id="formProducto">
+                <input type="hidden" id="idProducto">
+                <div class="form-group">
+                    <label for="codigoBarra">Código de barra</label>
+                    <input type="number" id="codigoBarra" required>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="marca">Marca</label>
+                    <input type="text" id="marca" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoria">Categoría</label>
+                    <input type="text" id="categoria" required>
+                </div>
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                    <input type="number" id="precio" step="0.01" min="0" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                    <button type="button" class="btn-cancelar" onclick="cerrarModalProducto()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles del producto -->
+    <div id="modalDetalleProducto" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar" onclick="cerrarModalDetalle()">&times;</span>
+            <h2 id="titulo-detalle">Detalles del Producto</h2>
+            <hr />
+            <div id="detalle-contenido">
+                <!-- Los detalles se cargarán aquí dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para el visor de PDF -->
+    <div id="modalPdf" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar" onclick="cerrarModalPdf()">&times;</span>
+            <h2 id="titulo-modal"></h2>
+            <div id="pdf-container">
+                <iframe id="visor-pdf" src="" type="application/pdf" style="border: none;"></iframe>
+                <div id="pdf-error" style="display: none; color: red; padding: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                    </svg>
+                    No se pudo cargar el documento PDF.
+                </div>
+            </div>
+        </div>
+    </div>
