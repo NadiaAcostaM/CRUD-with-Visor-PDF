@@ -1,26 +1,42 @@
-﻿// Estados de ordenación
+﻿/**
+ * ESTADOS DE ORDENACIÓN
+ * - ORIGINAL: Orden inicial por ID (sin ordenación aplicada)
+ * - ASCENDENTE: Orden alfabético A-Z
+ * - DESCENDENTE: Orden alfabético Z-A
+ */
 const ESTADO_ORDEN = {
-    ORIGINAL: 0,     // Orden por ID (original)
-    ASCENDENTE: 1,    // A-Z
-    DESCENDENTE: 2    // Z-A
+    ORIGINAL: 0,
+    ASCENDENTE: 1,
+    DESCENDENTE: 2
 };
 
+/* Estado actual de ordenación (inicia en ORIGINAL) */
 let estadoOrden = ESTADO_ORDEN.ORIGINAL;
-let productosOriginalesOrdenados = []; // Copia del orden original
 
+/* Copia del orden original de productos */
+let productosOriginalesOrdenados = [];
+
+/**
+ * Función principal de ordenación - Cicla entre los 3 estados
+ * Depende de:
+ * - productosFiltrados (buscador.js)
+ * - productosOriginales (buscador.js)
+ * - actualizarTabla() (tabla.js)
+ * - actualizarPaginacion() (paginacion.js)
+ */
 function ordenarProductos() {
-    // Determinar qué lista de productos usar (filtrados u originales)
+    // Selecciona qué lista ordenar (filtrada u original)
     const productosAOrdenar = productosFiltrados.length ? productosFiltrados : productosOriginales;
 
-    // Si es la primera vez que se ordena, guardamos el orden original
+    // Preserva orden original (solo en primera ejecución)
     if (productosOriginalesOrdenados.length === 0 && productosOriginales.length > 0) {
-        productosOriginalesOrdenados = [...productosOriginales];
+        productosOriginalesOrdenados = [...productosOriginales]; // Copia superficial
     }
 
-    // Cambiar al siguiente estado
+    // Cambia al siguiente estado (cíclico 0→1→2→0...)
     estadoOrden = (estadoOrden + 1) % 3;
 
-    // Ordenar según el estado actual
+    // Ordena según el estado actual
     let productosOrdenados;
     switch (estadoOrden) {
         case ESTADO_ORDEN.ORIGINAL:
@@ -41,45 +57,47 @@ function ordenarProductos() {
             break;
     }
 
-    // Actualizar la lista correspondiente
+    // Actualiza la lista correspondiente
     if (productosFiltrados.length) {
         productosFiltrados = productosOrdenados;
     } else {
         productosOriginales = productosOrdenados;
     }
 
-    // Actualizar la interfaz
+    // Actualiza la interfaz
     actualizarInterfazOrden();
     paginaActual = 1;
-    actualizarTabla(productosOrdenados);
-    actualizarPaginacion();
+    actualizarTabla(productosOrdenados); // <- De tabla.js
+    actualizarPaginacion(); // <- De paginacion.js
 }
 
+/* Actualiza los elementos visuales del sistema de ordenación */
 function actualizarInterfazOrden() {
     const icono = document.getElementById('icono-orden');
     const texto = document.getElementById('texto-orden');
     const indicador = document.getElementById('indicador-orden');
     const btnOrdenar = document.querySelector('.btn-ordenar');
 
-    // Resetear clases
+    // Limpia clases de estado previo
     btnOrdenar.classList.remove('active-asc', 'active-desc');
 
+    // Actualiza según estado actual
     switch (estadoOrden) {
         case ESTADO_ORDEN.ORIGINAL:
             texto.textContent = 'Ordenar';
-            indicador.textContent = 'ID';
+            indicador.textContent = 'ID'; // Indica orden original
             break;
 
         case ESTADO_ORDEN.ASCENDENTE:
             texto.textContent = 'Ordenar';
             indicador.textContent = 'A-Z';
-            btnOrdenar.classList.add('active-asc');
+            btnOrdenar.classList.add('active-asc'); // Estilo específico
             break;
 
         case ESTADO_ORDEN.DESCENDENTE:
             texto.textContent = 'Ordenar';
             indicador.textContent = 'Z-A';
-            btnOrdenar.classList.add('active-desc');
+            btnOrdenar.classList.add('active-desc'); // Estilo específico
             break;
     }
 }
