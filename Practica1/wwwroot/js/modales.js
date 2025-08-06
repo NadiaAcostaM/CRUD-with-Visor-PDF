@@ -42,6 +42,9 @@ function abrirFormulario() {
     document.getElementById('formProducto').reset();
     document.getElementById('idProducto').value = 0;
 
+    const titulo = document.getElementById('modal-title');
+    titulo.innerHTML = 'Agregar Producto';
+
     const modal = document.getElementById('modalProducto');
     modal.style.display = 'block';
     setTimeout(() => modal.classList.add('mostrar'), 10);
@@ -55,6 +58,9 @@ function abrirModalEditar(producto) {
     document.getElementById('marca').value = producto.marca;
     document.getElementById('categoria').value = producto.categoria;
     document.getElementById('precio').value = producto.precio;
+
+    const titulo = document.getElementById('modal-title');
+    titulo.innerHTML = 'Editar Producto';
 
     const modal = document.getElementById('modalProducto');
     modal.style.display = 'block';
