@@ -140,6 +140,59 @@ table button {
             background-color: var(--color-info-dark);
         }
 
+/* Botón de ordenar */
+.btn-ordenar {
+    position: relative;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+    .btn-ordenar:hover {
+        background-color: var(--color-primary-dark);
+    }
+
+    .btn-ordenar svg {
+        width: 16px;
+        height: 16px;
+    }
+
+#indicador-orden {
+    margin-left: 5px;
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+/* Estilos para el tooltip */
+.tooltip-orden {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    margin-bottom: 5px;
+}
+
+.btn-ordenar:hover .tooltip-orden {
+    opacity: 1;
+}
+
 /* ============ FORMULARIOS ============ */
 .form-group {
     margin-bottom: 1px;
@@ -184,15 +237,23 @@ table button {
 .up-actions {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     width: 100%;
     margin-bottom: 10px;
     gap: 15px;
 }
 
+.up-actions-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    margin-left: auto;
+}
+
 .search-input {
     position: relative;
     width: 100%;
+    max-width: 400px;
 }
 
 .search-icon {
@@ -206,6 +267,14 @@ table button {
 #buscador {
     padding-left: 35px;
     width: 150%;
+}
+
+.btn-ordenar {
+    margin-left: 0;
+}
+
+.btn-agregar {
+    margin-left: 0;
 }
 
 /* ============ TABLAS ============ */
@@ -681,5 +750,11 @@ hr {
         width: 16px;
         height: 16px;
         fill: white;
+    }
+
+    /* Quitar textos de los botones */
+    .btn-ordenar span,
+    .btn-agregar span {
+        display: none;
     }
 }

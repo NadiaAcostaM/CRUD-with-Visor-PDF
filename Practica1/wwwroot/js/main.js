@@ -14,6 +14,7 @@
  * - setupEventListeners() (de crud.js)
  * - buscador() (de buscador.js)
  * - configurarValidaciones() (de validaciones.js)
+ * - actualizarInterfazOrden() (de ordenar.js)
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -21,4 +22,5 @@ document.addEventListener('DOMContentLoaded', function () {
     setupEventListeners();
     buscador();
     configurarValidaciones();
+    actualizarInterfazOrden();
 });

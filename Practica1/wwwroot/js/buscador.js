@@ -17,24 +17,25 @@ let productosOriginales = []; // Almacena los productos para el filtrado
  * Depende de:
  * - actualizarTabla() (de tabla.js)
  * - actualizarPaginacion() (de paginacion.js)
+ * - actualizarInterfazOrden() (de ordenar.js)
  */
 function buscador() {
-    // Evento para el buscador
     document.getElementById('buscador').addEventListener('input', function (e) {
+        // Resetear al orden original al buscar
+        estadoOrden = ESTADO_ORDEN.ORIGINAL;
+        actualizarInterfazOrden();
+
         const terminoBusqueda = e.target.value.toLowerCase();
         const tablaProductos = document.getElementById('tablaProductos');
 
-        // Si no hay elementos para buscar muestra todo
         if (terminoBusqueda === '') {
-            productosFiltrados = productosOriginales;
+            productosFiltrados = [];
             actualizarTabla(productosOriginales);
         } else {
-            // Muestra las coincidencias
             productosFiltrados = productosOriginales.filter(producto =>
                 producto.nombre.toLowerCase().includes(terminoBusqueda)
             );
 
-            // Si no hay coincidencias
             if (productosFiltrados.length === 0) {
                 tablaProductos.innerHTML = `
                     <tr class="no-results">
